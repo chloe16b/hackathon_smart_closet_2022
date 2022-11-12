@@ -1,0 +1,61 @@
+---
+title: "Coding Weather API Zipcode"
+author: "Chloe"
+date: "11/12/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# libraries needed for API weather
+library(dasc2594)
+library(r2r)
+library(reticulate)
+library(RSocrata)
+library(httr)
+library(jsonlite)
+```
+
+
+```{r}
+### best working code chunk
+my_auth_token <- "c07715f450534a45826144758221211"
+
+call_api <- function(hosts){
+  base_url <- "http://api.weatherapi.com/v1"
+  # only change q='zipcode' for different areas
+  q <- # 72701 # 96795 # 10018
+  call_url <- paste0("http://api.weatherapi.com/v1/forecast.json?key=c07715f450534a45826144758221211&q=72701&days=1&aqi=no&alerts=no") 
+  message("Calling ", call_url)
+  req <- GET(call_url)
+  
+  if(req$status_code != 200){
+    stop("Problem with calling the API - response: ", content(req))
+  }
+
+response_content <- rawToChar(content(req, 'raw'))
+json_response <- fromJSON(response_content)
+json_response
+}
+daily_temp <- call_api(forecast$forecastday$day$avgtemp_f)
+
+daily_temp$forecast$forecastday$day$avgtemp_f
+```
+
+
+
+
+
+
+
+
+
+```{r}
+# just in case all else fails
+url = GET("http://api.weatherapi.com/v1/forecast.json")
+
+```
+
